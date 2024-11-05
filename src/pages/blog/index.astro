@@ -1,0 +1,22 @@
+---
+import BlogLayout from '../../layouts/BlogLayout.astro';
+import BlogCard from '../../components/BlogCard.astro';
+
+const posts = await Astro.glob('./*.md');
+posts.sort((a, b) => new Date(b.frontmatter.publishDate) - new Date(a.frontmatter.publishDate));
+---
+
+<BlogLayout title="Blog Posts - SAAS Blog">
+  <h1 class="text-4xl font-bold text-gray-900 mb-8">Latest Posts</h1>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+    {posts.map((post) => (
+      <BlogCard
+        title={post.frontmatter.title}
+        description={post.frontmatter.description}
+        publishDate={new Date(post.frontmatter.publishDate)}
+        category={post.frontmatter.category}
+        href={post.url}
+      />
+    ))}
+  </div>
+</BlogLayout>

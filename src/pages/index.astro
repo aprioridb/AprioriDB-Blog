@@ -1,0 +1,39 @@
+---
+import BlogCard from '../components/BlogCard.astro';
+import Navigation from '../components/Navigation.astro';
+
+const posts = await Astro.glob('./blog/*.md');
+const sortedPosts = posts.sort((a, b) => 
+  new Date(b.frontmatter.publishDate).getTime() - new Date(a.frontmatter.publishDate).getTime()
+);
+---
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>AprioriDB Blog</title>
+  </head>
+  <body>
+    <Navigation />
+    <main class="container">
+      {sortedPosts.map((post) => (
+        <BlogCard
+          title={post.frontmatter.title}
+          description={post.frontmatter.description}
+          publishDate={new Date(post.frontmatter.publishDate)}
+          category={post.frontmatter.category}
+          href={post.url}
+        />
+      ))}
+    </main>
+  </body>
+</html>
+
+<style is:global>
+  @import '../styles/global.css';
+</style>
