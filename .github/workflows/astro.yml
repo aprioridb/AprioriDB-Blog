@@ -54,6 +54,9 @@ jobs:
             echo "Unable to determine package manager"
             exit 1
           fi
+      - name: Prepare Yarn
+        run: corepack enable && corepack prepare yarn@4.6.0 --activate
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
@@ -61,9 +64,6 @@ jobs:
           cache: ${{ steps.detect-package-manager.outputs.manager }}
           cache-dependency-path: ${{ env.BUILD_PATH }}/${{ steps.detect-package-manager.outputs.lockfile }}
             
-      - name: Prepare Yarn
-        run: corepack enable && corepack prepare yarn@4.6.0 --activate
-      
       - name: Install dependencies
         run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
         working-directory: ${{ env.BUILD_PATH }}
