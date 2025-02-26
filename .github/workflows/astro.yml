@@ -60,12 +60,9 @@ jobs:
           node-version: "20"
           cache: ${{ steps.detect-package-manager.outputs.manager }}
           cache-dependency-path: ${{ env.BUILD_PATH }}/${{ steps.detect-package-manager.outputs.lockfile }}
-      
-      - name: Enable Corepack
-        run: corepack enable
-      
+            
       - name: Prepare Yarn
-        run: corepack prepare yarn@4.6.0 --activate
+        run: corepack enable && corepack prepare yarn@4.6.0 --activate
       
       - name: Install dependencies
         run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
